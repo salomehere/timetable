@@ -306,26 +306,36 @@
         return clean(daySlots[i]);
       }
 
-      if (currentIdx === -1) {
+      const dayIsOver = (currentIdx === -1 && nextIdx === -1);
+
+      if (dayIsOver) {
+        nowEl.textContent = "maxin' relaxin'";
+      } else if (currentIdx === -1) {
         nowEl.textContent = 'Between periods';
       } else {
         const p = periods[currentIdx];
         nowEl.textContent = `${subjectAt(currentIdx)} (${p.start}–${p.end})`;
       }
 
-      if (nextIdx === -1) {
+      if (dayIsOver) {
+        nextEl.textContent = 'we go again tomorrow';
+      } else if (nextIdx === -1) {
         nextEl.textContent = 'None — that’s the end of the day';
       } else {
         const p = periods[nextIdx];
         nextEl.textContent = `${subjectAt(nextIdx)} (${p.start})`;
       }
 
-      const rest = [];
-      periods.forEach((p, i) => {
-        const sM = hhmmToMinutes(p.start);
-        if (sM > minutes) rest.push(`${p.start} – ${subjectAt(i)}`);
-      });
-      restEl.textContent = rest.length ? rest.join('\n') : '—';
+      if (dayIsOver) {
+        restEl.textContent = 'child free';
+      } else {
+        const rest = [];
+        periods.forEach((p, i) => {
+          const sM = hhmmToMinutes(p.start);
+          if (sM > minutes) rest.push(`${p.start} – ${subjectAt(i)}`);
+        });
+        restEl.textContent = rest.length ? rest.join('\n') : '—';
+      }
     }
 
     document.getElementById('updated').textContent =
