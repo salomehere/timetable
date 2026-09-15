@@ -328,6 +328,7 @@
 
       if (dayIsOver) {
         restEl.textContent = 'child free';
+        restEl.style.color = 'var(--text)';
       } else {
         const rest = [];
         periods.forEach((p, i) => {
@@ -335,6 +336,7 @@
           if (sM > minutes) rest.push(`${p.start} – ${subjectAt(i)}`);
         });
         restEl.textContent = rest.length ? rest.join('\n') : '—';
+        restEl.style.color = '';
       }
     }
 
