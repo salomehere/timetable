@@ -1,0 +1,46 @@
+{
+  "_readme": "Edit this file to update anything. Dates are YYYY-MM-DD. Timetable slots line up 1:1 with the 'periods' list (5 slots/day). Use null for a free period.",
+
+  "teacherName": "Alexandra Jones",
+
+  "schoolDayStart": "09:25",
+  "schoolDayEnd": "15:15",
+
+  "periods": [
+    { "start": "09:25", "end": "10:20" },
+    { "start": "10:25", "end": "11:20" },
+    { "start": "11:45", "end": "12:40" },
+    { "start": "12:45", "end": "13:40" },
+    { "start": "14:20", "end": "15:15" }
+  ],
+
+  "weekAAnchorMonday": "2026-08-31",
+
+  "timetable": {
+    "A": {
+      "Monday":    [null, "PPA (AJ)", "7B/M1 · GR5", "11a/M3 · GR5", "7A/M5 · GR5"],
+      "Tuesday":   ["11a/M3 · GR5", "8A/M1 · GR5", "9B/M1 · GR5", "7A/M5 · GR5", null],
+      "Wednesday": ["9B/M1 · GR5", "7B/M1 · GR5", "11a/M3 · GR5", "AJ Standby", "8B/M4 · GR5"],
+      "Thursday":  ["7A/M5 · GR5", "9B/M1 · GR5", "PPA (AJ)", null, "8A/M1 · GR5"],
+      "Friday":    ["11a/M3 · GR5", "8A/M1 · GR5", "7B/M1 · GR5", "8B/M4 · GR5", "9B/M1 · GR5"]
+    },
+    "B": {
+      "Monday":    ["8A/M1 · GR5", "PPA (AJ)", "7B/M1 · GR5", "11a/M3 · GR5", "7A/M5 · GR5"],
+      "Tuesday":   ["9B/M1 · GR5", "8A/M1 · GR5", "7A/M5 · GR5", "11a/M3 · GR5", "8B/M4 · GR5"],
+      "Wednesday": ["9B/M1 · GR5", "Meeting: LKB / Year 8 team", null, "AJ Standby", "PPA (AJ)"],
+      "Thursday":  ["8B/M4 · GR5", "8A/M1 · GR5", "11a/M3 · GR5", null, "7A/M5 · GR5"],
+      "Friday":    ["11a/M3 · GR5", "8A/M1 · GR5", "7B/M1 · GR5", "8B/M4 · GR5", "9B/M1 · GR5"]
+    }
+  },
+
+  "terms": [
+    { "name": "Term 1", "start": "2026-09-03", "end": "2026-10-16" },
+    { "name": "Term 2", "start": "2026-11-02", "end": "2026-12-18" },
+    { "name": "Term 3", "start": "2027-01-04", "end": "2027-02-12" },
+    { "name": "Term 4", "start": "2027-02-22", "end": "2027-03-25" },
+    { "name": "Term 5", "start": "2027-04-08", "end": "2027-05-21" },
+    { "name": "Term 6", "start": "2027-06-01", "end": "2027-07-16" }
+  ],
+
+  "insetDays": ["2026-09-01", "2026-11-27"]
+}
