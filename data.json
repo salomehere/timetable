@@ -1,7 +1,7 @@
 {
   "_readme": "Edit this file to update anything. Dates are YYYY-MM-DD. Timetable slots line up 1:1 with the 'periods' list (5 slots/day). Use null for a free period.",
 
-  "teacherName": "Alexandra Jones",
+  "teacherName": "Ali",
 
   "schoolDayStart": "09:25",
   "schoolDayEnd": "15:15",
