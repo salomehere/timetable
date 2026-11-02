@@ -18,6 +18,7 @@
     { "start": "14:15", "end": "14:20", "kind": "transition" },
     { "start": "14:20", "end": "15:15", "kind": "lesson" },
     { "start": "15:16", "end": "16:15", "kind": "fixed", "label": "Meeting", "onlyDays": ["Wednesday"] },
+    { "start": "15:16", "end": "16:15", "kind": "fixed", "label": "Intervention", "onlyDays": ["Monday"] },
     { "start": "16:15", "end": "16:40", "kind": "fixed", "label": "Meeting", "onlyDays": ["Wednesday"] }
   ],
 
