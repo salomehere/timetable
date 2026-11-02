@@ -238,15 +238,45 @@
   }
 
   function clean(s) {
-    if (s === undefined || s === null) return '—';
+    if (s === undefined || s === null) return 'Free';
     const t = String(s).trim();
-    return t ? t : '—';
+    return t ? t : 'Free';
+  }
+
+  // A day's periods, in order, with the Wednesday-only meeting slots
+  // dropped on every other day.
+  function periodsForDay(weekday) {
+    return (DATA.periods || []).filter(p => !p.onlyDays || p.onlyDays.includes(weekday));
+  }
+
+  // Resolve each period's display label for this weekday/week, pulling
+  // lesson labels from the timetable in order and everything else from
+  // the period's own fixed/duty config.
+  function resolvePeriods(periods, weekday, weekType, daySlots) {
+    let lessonIdx = 0;
+    return periods.map(p => {
+      let label;
+      if (p.kind === 'lesson') {
+        label = clean(daySlots[lessonIdx]);
+        lessonIdx++;
+      } else if (p.kind === 'break') {
+        label = (p.dutyDays && p.dutyDays[weekday]) || p.label || 'Break';
+      } else if (p.kind === 'lunch') {
+        label = (p.labelByWeek && p.labelByWeek[weekType]) || p.label || 'Lunch';
+      } else if (p.kind === 'transition') {
+        label = 'Transition';
+      } else {
+        label = p.label || '—';
+      }
+      return { start: p.start, end: p.end, kind: p.kind, label };
+    });
   }
 
   function render() {
     setError('');
 
-    const now = new Date();
+    const simNow = new URLSearchParams(location.search).get('simNow');
+    const now = simNow ? new Date(simNow) : new Date();
     const { iso, hhmm, weekday, minutes } = londonParts(now);
 
     document.getElementById('pageTitle').textContent =
@@ -255,10 +285,6 @@
 
     const badges = document.getElementById('badges');
     badges.innerHTML = '';
-
-    const schoolStartM = hhmmToMinutes(DATA.schoolDayStart);
-    const schoolEndM = hhmmToMinutes(DATA.schoolDayEnd);
-    const outsideHours = (minutes < schoolStartM || minutes >= schoolEndM);
 
     const isWeekend = (weekday === 'Saturday' || weekday === 'Sunday');
     const isInset = (DATA.insetDays || []).includes(iso);
@@ -276,8 +302,6 @@
     else if (statusMode === 'inset') badges.appendChild(pill('Inset day'));
     else badges.appendChild(pill('Week ' + weekType));
 
-    if (statusMode === 'lessons' && outsideHours) badges.appendChild(pill('Outside school hours'));
-
     const nowEl = document.getElementById('now');
     const nextEl = document.getElementById('next');
     const restEl = document.getElementById('rest');
@@ -292,8 +316,8 @@
       nextEl.textContent = '—';
       restEl.textContent = '—';
     } else {
-      const periods = DATA.periods || [];
       const daySlots = (DATA.timetable[weekType] && DATA.timetable[weekType][weekday]) || [];
+      const periods = resolvePeriods(periodsForDay(weekday), weekday, weekType, daySlots);
 
       let currentIdx = -1, nextIdx = -1;
       periods.forEach((p, i) => {
@@ -301,10 +325,6 @@
         if (minutes >= sM && minutes < eM) currentIdx = i;
         if (nextIdx === -1 && sM > minutes) nextIdx = i;
       });
-
-      function subjectAt(i) {
-        return clean(daySlots[i]);
-      }
 
       const dayIsOver = (currentIdx === -1 && nextIdx === -1);
 
@@ -314,7 +334,7 @@
         nowEl.textContent = 'Between periods';
       } else {
         const p = periods[currentIdx];
-        nowEl.textContent = `${subjectAt(currentIdx)} (${p.start}–${p.end})`;
+        nowEl.textContent = `${p.label} (${p.start}–${p.end})`;
       }
 
       if (dayIsOver) {
@@ -323,7 +343,7 @@
         nextEl.textContent = 'None — that’s the end of the day';
       } else {
         const p = periods[nextIdx];
-        nextEl.textContent = `${subjectAt(nextIdx)} (${p.start})`;
+        nextEl.textContent = `${p.label} (${p.start})`;
       }
 
       if (dayIsOver) {
@@ -331,9 +351,9 @@
         restEl.style.color = 'var(--text)';
       } else {
         const rest = [];
-        periods.forEach((p, i) => {
+        periods.forEach(p => {
           const sM = hhmmToMinutes(p.start);
-          if (sM > minutes) rest.push(`${p.start} – ${subjectAt(i)}`);
+          if (sM > minutes && p.kind !== 'transition') rest.push(`${p.start} – ${p.label}`);
         });
         restEl.textContent = rest.length ? rest.join('\n') : '—';
         restEl.style.color = '';
