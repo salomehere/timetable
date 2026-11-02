@@ -3,19 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0b1324">
+<meta name="theme-color" content="#0a3320">
 <title>Timetable</title>
 
 <style>
   :root {
-    --bg: #0b1324;
-    --card: #141c2f;
-    --muted: #8ea0c4;
-    --text: #e6eefc;
-    --accent: #7bd389;
-    --accent-text: #08210f;
-    --tag: #1e2742;
-    --error: #ff9e9e;
+    --bg: #0a3320;
+    --card: #7a0c1e;
+    --muted: #f3c6cd;
+    --text: #ffffff;
+    --accent: #ffffff;
+    --accent-text: #7a0c1e;
+    --tag: #ffffff;
+    --tag-text: #0a3320;
+    --error: #ffe0e0;
   }
 
   * { box-sizing: border-box; }
@@ -73,7 +74,7 @@
     padding: 5px 9px;
     border-radius: 999px;
     background: var(--tag);
-    color: #cfe3ff;
+    color: var(--tag-text);
     font-weight: 650;
     font-size: 12px;
     margin-left: 6px;
@@ -302,6 +303,17 @@
     else if (statusMode === 'inset') badges.appendChild(pill('Inset day'));
     else badges.appendChild(pill('Week ' + weekType));
 
+    // Days until the next holiday (the end date of the term we're currently in).
+    if (isTermTime) {
+      const currentTerm = (DATA.terms || []).find(t => iso >= t.start && iso <= t.end);
+      if (currentTerm) {
+        const daysLeft = Math.round((isoToUTCNoon(currentTerm.end) - isoToUTCNoon(iso)) / 86400000);
+        if (daysLeft === 0) badges.appendChild(pill('Last day of term!'));
+        else if (daysLeft === 1) badges.appendChild(pill('1 day to holidays'));
+        else badges.appendChild(pill(daysLeft + ' days to holidays'));
+      }
+    }
+
     const nowEl = document.getElementById('now');
     const nextEl = document.getElementById('next');
     const restEl = document.getElementById('rest');
@@ -338,7 +350,15 @@
       }
 
       if (dayIsOver) {
-        nextEl.textContent = 'we go again tomorrow';
+        const isLastDayOfTerm = (DATA.terms || []).some(t => t.end === iso);
+        const isFriday = (weekday === 'Friday');
+        if (isLastDayOfTerm) {
+          nextEl.textContent = 'HOLIDAYS TOMORROW WOOOOOO!!';
+        } else if (isFriday) {
+          nextEl.textContent = 'TALK ABOUT FRIYAY!';
+        } else {
+          nextEl.textContent = 'another day of "joy" tomorrow';
+        }
       } else if (nextIdx === -1) {
         nextEl.textContent = 'None — that’s the end of the day';
       } else {
