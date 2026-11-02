@@ -238,18 +238,17 @@
     return terms.some(t => iso >= t.start && iso <= t.end);
   }
 
-  // Count school days strictly between `fromIso` and `toIso` inclusive of
+  // Count weekdays strictly between `fromIso` and `toIso` inclusive of
   // `toIso` but not `fromIso` (i.e. "days left" from today to end date),
-  // skipping weekends and inset days.
-  function schoolDaysBetween(fromIso, toIso, insetDays) {
+  // skipping weekends only (inset days still count).
+  function schoolDaysBetween(fromIso, toIso) {
     let count = 0;
     const d = isoToUTCNoon(fromIso);
     const end = isoToUTCNoon(toIso);
     d.setUTCDate(d.getUTCDate() + 1);
     while (d <= end) {
       const dow = d.getUTCDay(); // 0=Sun..6=Sat
-      const iso = d.toISOString().slice(0, 10);
-      if (dow !== 0 && dow !== 6 && !insetDays.includes(iso)) count++;
+      if (dow !== 0 && dow !== 6) count++;
       d.setUTCDate(d.getUTCDate() + 1);
     }
     return count;
@@ -325,7 +324,7 @@
     if (isTermTime) {
       const currentTerm = (DATA.terms || []).find(t => iso >= t.start && iso <= t.end);
       if (currentTerm) {
-        const daysLeft = schoolDaysBetween(iso, currentTerm.end, DATA.insetDays || []);
+        const daysLeft = schoolDaysBetween(iso, currentTerm.end);
         if (daysLeft === 0) badges.appendChild(pill('Last day of term!'));
         else if (daysLeft === 1) badges.appendChild(pill('1 day to holidays'));
         else badges.appendChild(pill(daysLeft + ' days to holidays'));
