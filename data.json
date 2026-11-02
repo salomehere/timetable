@@ -1,35 +1,42 @@
 {
-  "_readme": "Edit this file to update anything. Dates are YYYY-MM-DD. Timetable slots line up 1:1 with the 'periods' list (5 slots/day). Use null for a free period.",
+  "_readme": "Edit this file to update anything. Dates are YYYY-MM-DD. 'periods' is the full day in order — kind 'lesson' entries line up 1:1 with the 5 slots in each 'timetable' day array (in order); every other kind renders its own fixed/duty label and ignores the timetable. Use null in a timetable day array for a free lesson period.",
 
   "teacherName": "Ali",
 
-  "schoolDayStart": "09:25",
-  "schoolDayEnd": "15:15",
-
   "periods": [
-    { "start": "09:25", "end": "10:20" },
-    { "start": "10:25", "end": "11:20" },
-    { "start": "11:45", "end": "12:40" },
-    { "start": "12:45", "end": "13:40" },
-    { "start": "14:20", "end": "15:15" }
+    { "start": "08:50", "end": "09:20", "kind": "fixed", "label": "Prep" },
+    { "start": "09:20", "end": "09:25", "kind": "transition" },
+    { "start": "09:25", "end": "10:20", "kind": "lesson" },
+    { "start": "10:20", "end": "10:25", "kind": "transition" },
+    { "start": "10:25", "end": "11:20", "kind": "lesson" },
+    { "start": "11:20", "end": "11:40", "kind": "break", "label": "Break", "dutyDays": { "Wednesday": "Break duty (Referral)" } },
+    { "start": "11:40", "end": "11:45", "kind": "transition" },
+    { "start": "11:45", "end": "12:40", "kind": "lesson" },
+    { "start": "12:40", "end": "12:45", "kind": "transition" },
+    { "start": "12:45", "end": "13:40", "kind": "lesson" },
+    { "start": "13:40", "end": "14:15", "kind": "lunch", "labelByWeek": { "A": "Lunch duty (Reflection)", "B": "Lunch duty (Referral)" } },
+    { "start": "14:15", "end": "14:20", "kind": "transition" },
+    { "start": "14:20", "end": "15:15", "kind": "lesson" },
+    { "start": "15:16", "end": "16:15", "kind": "fixed", "label": "Meeting", "onlyDays": ["Wednesday"] },
+    { "start": "16:15", "end": "16:40", "kind": "fixed", "label": "Meeting", "onlyDays": ["Wednesday"] }
   ],
 
   "weekAAnchorMonday": "2026-08-31",
 
   "timetable": {
     "A": {
-      "Monday":    [null, "PPA (AJ)", "7B/M1 · GR5", "11a/M3 · GR5", "7A/M5 · GR5"],
-      "Tuesday":   ["11a/M3 · GR5", "8A/M1 · GR5", "9B/M1 · GR5", "7A/M5 · GR5", null],
-      "Wednesday": ["9B/M1 · GR5", "7B/M1 · GR5", "11a/M3 · GR5", "AJ Standby", "8B/M4 · GR5"],
-      "Thursday":  ["7A/M5 · GR5", "9B/M1 · GR5", "PPA (AJ)", null, "8A/M1 · GR5"],
-      "Friday":    ["11a/M3 · GR5", "8A/M1 · GR5", "7B/M1 · GR5", "8B/M4 · GR5", "9B/M1 · GR5"]
+      "Monday":    [null, null, "Year 7 Set 1", "Year 11 Set 3", "Year 7 Set 5"],
+      "Tuesday":   ["Year 11 Set 3", "Year 8 Set 1", "Year 9 Set 1", "Year 7 Set 5", null],
+      "Wednesday": ["Year 9 Set 1", "Year 7 Set 1", "Year 11 Set 3", "Standby", "Year 8 Set 4"],
+      "Thursday":  ["Year 7 Set 5", "Year 9 Set 1", null, null, "Year 8 Set 1"],
+      "Friday":    ["Year 11 Set 3", "Year 8 Set 1", "Year 7 Set 1", "Year 8 Set 4", "Year 9 Set 1"]
     },
     "B": {
-      "Monday":    ["8A/M1 · GR5", "PPA (AJ)", "7B/M1 · GR5", "11a/M3 · GR5", "7A/M5 · GR5"],
-      "Tuesday":   ["9B/M1 · GR5", "8A/M1 · GR5", "7A/M5 · GR5", "11a/M3 · GR5", "8B/M4 · GR5"],
-      "Wednesday": ["9B/M1 · GR5", "Meeting: LKB / Year 8 team", null, "AJ Standby", "PPA (AJ)"],
-      "Thursday":  ["8B/M4 · GR5", "8A/M1 · GR5", "11a/M3 · GR5", null, "7A/M5 · GR5"],
-      "Friday":    ["11a/M3 · GR5", "8A/M1 · GR5", "7B/M1 · GR5", "8B/M4 · GR5", "9B/M1 · GR5"]
+      "Monday":    ["Year 8 Set 1", null, "Year 7 Set 1", "Year 11 Set 3", "Year 7 Set 5"],
+      "Tuesday":   ["Year 9 Set 1", "Year 8 Set 1", "Year 7 Set 5", "Year 11 Set 3", "Year 8 Set 4"],
+      "Wednesday": ["Year 9 Set 1", "Meeting", null, "Standby", null],
+      "Thursday":  ["Year 8 Set 4", "Year 8 Set 1", "Year 11 Set 3", null, "Year 7 Set 5"],
+      "Friday":    ["Year 11 Set 3", "Year 8 Set 1", "Year 7 Set 1", "Year 8 Set 4", "Year 9 Set 1"]
     }
   },
 
